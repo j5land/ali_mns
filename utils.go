@@ -10,8 +10,11 @@ import (
 func send(client MNSClient, decoder MNSDecoder, method Method, headers map[string]string, message interface{}, resource string, v interface{}) (statusCode int, err error) {
 	var resp *fasthttp.Response
 	if resp, err = client.Send(method, headers, message, resource); err != nil {
+		fasthttp.ReleaseResponse(resp)
 		return
 	}
+
+	defer fasthttp.ReleaseResponse(resp)
 
 	if resp != nil {
 		statusCode = resp.Header.StatusCode()

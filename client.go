@@ -221,9 +221,13 @@ func (p *aliMNSClient) Send(method Method, headers map[string]string, message in
 	resp := fasthttp.AcquireResponse()
 
 	if err = p.client.Do(req,resp); err != nil {
+		fasthttp.ReleaseRequest(req)
+		fasthttp.ReleaseResponse(resp)
 		err = ERR_SEND_REQUEST_FAILED.New(errors.Params{"err": err})
 		return nil , err
 	}
+
+	fasthttp.ReleaseRequest(req)
 
 	return resp, nil
 }
