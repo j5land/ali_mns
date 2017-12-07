@@ -14,7 +14,7 @@ import (
 	"time"
 
 	"github.com/gogap/errors"
-	"github.com/valyala/fasthttp"
+	"github.com/erikdubbelboer/fasthttp"
 )
 
 const (

@@ -1,0 +1,33 @@
+hash: 35617cba6cb2d04d6ce108799d808dd2216e6d56c56451fe9e98bef31872dbd5
+updated: 2017-12-07T13:15:26.92675+08:00
+imports:
+- name: github.com/erikdubbelboer/fasthttp
+  version: 370940d7de869df4e0131caf322273d724d78ecb
+  subpackages:
+  - fasthttputil
+  - stackless
+- name: github.com/gogap/errors
+  version: 149c546090d0ac947ee5f6772d431e30cf0f6f3b
+- name: github.com/gogap/logs
+  version: 31c6d1e28b2c124efcce7234fc397d2121ab5a1d
+- name: github.com/gogap/stack
+  version: fef68dddd4f8092a1be1acacb121f847315e5c94
+- name: github.com/klauspost/compress
+  version: 006acde2c5d283d2f8b8aa03d8f0cd2891c680cf
+  subpackages:
+  - flate
+  - gzip
+  - zlib
+- name: github.com/klauspost/cpuid
+  version: 09cded8978dc9e80714c4d85b0322337b0a1e5e0
+- name: github.com/klauspost/crc32
+  version: cb6bfca970f6908083f26f39a79009d608efd5cd
+- name: github.com/souriki/ali_mns
+  version: 6b66415766d56a1330ffd9efd0ebfebed0c330d6
+- name: github.com/valyala/bytebufferpool
+  version: e746df99fe4a3986f4d4f79e13c1e0117ce9c2f7
+- name: github.com/valyala/fasthttp
+  version: d42167fd04f636e20b005e9934159e95454233c7
+  subpackages:
+  - fasthttputil
+testImports: []
