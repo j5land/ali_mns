@@ -14,7 +14,7 @@ import (
 	"time"
 
 	"github.com/gogap/errors"
-	"github.com/erikdubbelboer/fasthttp"
+	"github.com/lujiajing1126/fasthttp"
 )
 
 const (
@@ -226,7 +226,7 @@ func (p *aliMNSClient) Send(method Method, headers map[string]string, message in
 
 	resp := fasthttp.AcquireResponse()
 
-	if err = p.client.DoTimeout(req, resp, DefaultDoRequestTimeout); err != nil {
+	if err = p.client.Do(req, resp); err != nil {
 		fasthttp.ReleaseRequest(req)
 		fasthttp.ReleaseResponse(resp)
 		err = ERR_SEND_REQUEST_FAILED.New(errors.Params{"err": err})

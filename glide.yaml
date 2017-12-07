@@ -5,4 +5,4 @@ import:
 - package: github.com/souriki/ali_mns
   version: ^1.0.0
 - package: github.com/erikdubbelboer/fasthttp
-  version: 370940d
+  version: ^1.0.0.20171207
