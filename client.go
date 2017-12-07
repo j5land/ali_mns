@@ -28,17 +28,19 @@ const (
 )
 
 const (
-	version = "2015-06-06"
+	MNSVersion = "2015-06-06"
 )
 
 const (
-	DefaultTimeout int64 = 35
+	DefaultDoRequestTimeout       = 30 * time.Second
+	DefaultTimeout          int64 = 20
 )
 
 type Method string
 
 var (
-	errMapping map[string]errors.ErrCodeTemplate
+	DefaultMaxConnPerHost = 128
+	errMapping            map[string]errors.ErrCodeTemplate
 )
 
 func init() {
@@ -140,7 +142,12 @@ func (p *aliMNSClient) initFastHttpClient() {
 
 	timeout := time.Second * time.Duration(timeoutInt)
 
-	p.client = &fasthttp.Client{ReadTimeout: timeout, WriteTimeout: timeout}
+	p.client = &fasthttp.Client{
+		ReadTimeout:         timeout,
+		WriteTimeout:        timeout,
+		MaxConnsPerHost:     DefaultMaxConnPerHost,
+		MaxIdleConnDuration: time.Second * time.Duration(20),
+	}
 }
 
 func (p *aliMNSClient) proxy(req *http.Request) (*neturl.URL, error) {
@@ -189,7 +196,7 @@ func (p *aliMNSClient) Send(method Method, headers map[string]string, message in
 		headers = make(map[string]string)
 	}
 
-	headers[MQ_VERSION] = version
+	headers[MQ_VERSION] = MNSVersion
 	headers[CONTENT_TYPE] = "application/xml"
 	headers[CONTENT_MD5] = base64.StdEncoding.EncodeToString([]byte(strMd5))
 	headers[DATE] = time.Now().UTC().Format(http.TimeFormat)
@@ -220,7 +227,7 @@ func (p *aliMNSClient) Send(method Method, headers map[string]string, message in
 
 	resp := fasthttp.AcquireResponse()
 
-	if err = p.client.Do(req, resp); err != nil {
+	if err = p.client.DoTimeout(req, resp, DefaultDoRequestTimeout); err != nil {
 		fasthttp.ReleaseRequest(req)
 		fasthttp.ReleaseResponse(resp)
 		err = ERR_SEND_REQUEST_FAILED.New(errors.Params{"err": err})
