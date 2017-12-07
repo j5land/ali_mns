@@ -23,9 +23,9 @@ type AliMNSQueue interface {
 }
 
 type MNSQueue struct {
-	name          string
-	client        MNSClient
-	decoder       MNSDecoder
+	name    string
+	client  MNSClient
+	decoder MNSDecoder
 
 	qpsMonitor *QPSMonitor
 }

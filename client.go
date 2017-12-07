@@ -36,7 +36,7 @@ const (
 	DefaultTimeout          int64 = 20
 )
 
-type Method string
+type Method = string
 
 var (
 	DefaultMaxConnPerHost = 128
@@ -48,10 +48,10 @@ func init() {
 }
 
 const (
-	GET    Method = "GET"
-	PUT           = "PUT"
-	POST          = "POST"
-	DELETE        = "DELETE"
+	GET    = "GET"
+	PUT    = "PUT"
+	POST   = "POST"
+	DELETE = "DELETE"
 )
 
 type MNSClient interface {
@@ -213,12 +213,11 @@ func (p *aliMNSClient) Send(method Method, headers map[string]string, message in
 	buffer.WriteString("/")
 	buffer.WriteString(resource)
 
-	url := buffer.String()
-
 	req := fasthttp.AcquireRequest()
 
-	req.SetRequestURI(url)
-	req.Header.SetMethod(string(method))
+	req.SetRequestURIBytes(buffer.Bytes())
+	buffer.Reset()
+	req.Header.SetMethod(method)
 	req.SetBody(xmlContent)
 
 	for header, value := range headers {
