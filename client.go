@@ -32,8 +32,9 @@ const (
 )
 
 const (
-	DefaultDoRequestTimeout       = 30 * time.Second
-	DefaultTimeout          int64 = 20
+	DefaultDoRequestTimeout          = 30 * time.Second
+	DefaultTimeout             int64 = 20
+	DefaultMaxIdleConnDuration       = 35 * time.Second
 )
 
 type Method = string
@@ -146,7 +147,7 @@ func (p *aliMNSClient) initFastHttpClient() {
 		ReadTimeout:         timeout,
 		WriteTimeout:        timeout,
 		MaxConnsPerHost:     DefaultMaxConnPerHost,
-		MaxIdleConnDuration: time.Second * time.Duration(20),
+		MaxIdleConnDuration: DefaultMaxIdleConnDuration,
 	}
 }
 
