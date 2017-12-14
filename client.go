@@ -31,10 +31,10 @@ const (
 	MNSVersion = "2015-06-06"
 )
 
-const (
+var (
 	DefaultDoRequestTimeout          = 30 * time.Second
-	DefaultTimeout             int64 = 20
-	DefaultMaxIdleConnDuration       = 35 * time.Second
+	DefaultTimeout             int64 = 30
+	DefaultMaxIdleConnDuration       = 10 * time.Second
 )
 
 type Method = string
