@@ -4,5 +4,6 @@ import:
 - package: github.com/gogap/logs
 - package: github.com/souriki/ali_mns
   version: ^1.0.0
-- package: github.com/lujiajing1126/fasthttp
-  version: 1.0.0.20171207
+- package: github.com/valyala/fasthttp
+  version: "20180529"
+- package: github.com/gogap/stack

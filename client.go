@@ -14,7 +14,7 @@ import (
 	"time"
 
 	"github.com/gogap/errors"
-	"github.com/lujiajing1126/fasthttp"
+	"github.com/valyala/fasthttp"
 )
 
 const (
@@ -68,7 +68,7 @@ type aliMNSClient struct {
 	url         *neturl.URL
 	credential  Credential
 	accessKeyId string
-	client      *fasthttp.Client
+	client      *fasthttp.HostClient
 	proxyURL    string
 
 	accountId string
@@ -93,7 +93,7 @@ func NewAliMNSClient(inputUrl, accessKeyId, accessKeySecret string) MNSClient {
 		panic("err parse url")
 	}
 
-	// 1. parse region and accountid
+	// 1. parse region and account-id
 	pieces := strings.Split(inputUrl, ".")
 	if len(pieces) != 5 {
 		panic("ali-mns: message queue url is invalid")
@@ -105,8 +105,8 @@ func NewAliMNSClient(inputUrl, accessKeyId, accessKeySecret string) MNSClient {
 	regionSlice := strings.Split(pieces[2], "-internal")
 	cli.region = regionSlice[0]
 
-	if globalurl := os.Getenv(GLOBAL_PROXY); globalurl != "" {
-		cli.proxyURL = globalurl
+	if globalUrl := os.Getenv(GLOBAL_PROXY); globalUrl != "" {
+		cli.proxyURL = globalUrl
 	}
 
 	// 2. now init http client
@@ -143,19 +143,20 @@ func (p *aliMNSClient) initFastHttpClient() {
 
 	timeout := time.Second * time.Duration(timeoutInt)
 
-	p.client = &fasthttp.Client{
+	p.client = &fasthttp.HostClient{
+		Addr:                p.getProxy(),
 		ReadTimeout:         timeout,
 		WriteTimeout:        timeout,
-		MaxConnsPerHost:     DefaultMaxConnPerHost,
+		MaxConns:            DefaultMaxConnPerHost,
 		MaxIdleConnDuration: DefaultMaxIdleConnDuration,
 	}
 }
 
-func (p *aliMNSClient) proxy(req *http.Request) (*neturl.URL, error) {
+func (p *aliMNSClient) getProxy() string {
 	if p.proxyURL != "" {
-		return neturl.Parse(p.proxyURL)
+		return p.proxyURL
 	}
-	return nil, nil
+	return p.url.Host
 }
 
 func (p *aliMNSClient) authorization(method Method, headers map[string]string, resource string) (authHeader string, err error) {
