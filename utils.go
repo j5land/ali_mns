@@ -4,7 +4,7 @@ import (
 	"bytes"
 
 	"github.com/gogap/errors"
-	"github.com/valyala/fasthttp"
+	"github.com/j5land/fasthttp"
 )
 
 func send(client MNSClient, decoder MNSDecoder, method Method, headers map[string]string, message interface{}, resource string, v interface{}) (statusCode int, err error) {

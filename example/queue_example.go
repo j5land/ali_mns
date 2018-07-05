@@ -8,7 +8,7 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/lujiajing1126/ali_mns"
+	"github.com/j5land/ali_mns"
 	"github.com/gogap/logs"
 )
 
